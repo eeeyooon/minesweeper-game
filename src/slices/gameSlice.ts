@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { initialBoard } from '../lib/game';
+import { CELL_FLAG } from '../lib/constants';
+import { findAroundMine } from '../components/service/minesweeper';
 
 interface GameState {
 	board: number[][];
@@ -39,9 +41,36 @@ export const gameSlice = createSlice({
 			state.openCellCount = 0;
 			state.timer = 0;
 		},
+		openCell: (state, action: PayloadAction<{ row: number; col: number }>) => {
+			const { row, col } = action.payload;
+			const cell = state.board[row][col];
+
+			if (state.gameStatus === 'waiting') {
+				state.gameStatus = 'playing';
+			}
+
+			if (cell === CELL_FLAG.OPEN || cell === CELL_FLAG.FLAG) {
+				return;
+			}
+
+			// 셀이 지뢰인 경우
+			if (cell === CELL_FLAG.MINE) {
+				state.gameStatus = 'lose';
+			} else if (cell !== CELL_FLAG.MINE) {
+				// 지뢰가 아닌 경우
+				const mineCount = findAroundMine(state.board, row, col);
+				state.board[row][col] = mineCount > 0 ? mineCount : CELL_FLAG.OPEN;
+				state.openCellCount += 1;
+
+				// 승리 조건
+				if (state.openCellCount === state.rows * state.cols - state.mineCount) {
+					state.gameStatus = 'win';
+				}
+			}
+		},
 	},
 });
 
-export const { startGame } = gameSlice.actions;
+export const { startGame, openCell } = gameSlice.actions;
 
 export default gameSlice.reducer;

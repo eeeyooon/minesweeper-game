@@ -2,20 +2,36 @@ import styled from 'styled-components';
 import Cell from '../Cell';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
+import { useDispatch } from 'react-redux';
+import { openCell } from '../../slices/gameSlice';
 
 export default function Board() {
-	const { rows, cols, board } = useSelector((state: RootState) => state.game);
+	const dispatch = useDispatch();
+	const game = useSelector((state: RootState) => state.game);
+	const { rows, cols, board, gameStatus } = game;
+	console.log(gameStatus);
+	console.log(game);
 
-	console.log(board);
+	const handleCellClick = (row: number, col: number) => {
+		dispatch(openCell({ row, col }));
+	};
 
 	const createBoard = () => {
 		const totalCells = rows * cols;
 		const cells = [];
 
-		for (let index = 0; index < totalCells; index++) {
-			const row = index % cols;
-			const col = Math.floor(index / cols);
-			cells.push(<Cell key={`${row}-${col}`} row={row} col={col} />);
+		for (let i = 0; i < totalCells; i++) {
+			const col = i % cols;
+			const row = Math.floor(i / cols);
+			cells.push(
+				<Cell
+					key={`${row}-${col}`}
+					row={row}
+					col={col}
+					cellData={board[row][col]}
+					onClick={() => handleCellClick(row, col)}
+				/>,
+			);
 		}
 
 		return cells;
