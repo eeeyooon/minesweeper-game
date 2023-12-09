@@ -72,9 +72,9 @@ export const gameSlice = createSlice({
 				}
 
 				const mineCount = findAroundMine(state.board, row, col);
-				state.board[row][col] = mineCount > 0 ? mineCount : CELL_TYPE.OPEN;
-				if (cell === CELL_TYPE.NOTHING) {
-					state.openCellCount += 1;
+				if (state.board[row][col] === CELL_TYPE.NOTHING) {
+					state.board[row][col] = mineCount > 0 ? mineCount : CELL_TYPE.OPEN;
+					state.openCellCount++;
 				}
 
 				if (mineCount === 0) {
@@ -90,7 +90,7 @@ export const gameSlice = createSlice({
 				}
 			};
 
-			openCellRecursive(action.payload.row, action.payload.col);
+			openCellRecursive(row, col);
 
 			// 승리 조건
 			const isWin =
