@@ -94,9 +94,34 @@ export const gameSlice = createSlice({
 				state.gameStatus = GAME_STATUS.WIN;
 			}
 		},
+		toggleFlag: (state, action: PayloadAction<{ row: number; col: number }>) => {
+			const { row, col } = action.payload;
+			const cell = state.board[row][col];
+
+			if (cell === CELL_TYPE.MINE) {
+				// 지뢰 셀에 깃발 추가
+				state.board[row][col] = CELL_TYPE.MINE_FLAG;
+				state.flagCount += 1;
+			} else if (cell === CELL_TYPE.MINE_FLAG) {
+				// 지뢰 셀에서 깃발 제거
+				state.board[row][col] = CELL_TYPE.MINE;
+				state.flagCount -= 1;
+			} else if (cell === CELL_TYPE.NOTHING) {
+				// 지뢰가 아닌 셀에 깃발 추가
+				state.board[row][col] = CELL_TYPE.FLAG;
+			} else if (cell === CELL_TYPE.FLAG) {
+				// 지뢰가 아닌 셀에서 깃발 제거
+				state.board[row][col] = CELL_TYPE.NOTHING;
+			}
+
+			// 승리 조건
+			if (state.flagCount === state.mineCount) {
+				state.gameStatus = GAME_STATUS.WIN;
+			}
+		},
 	},
 });
 
-export const { startGame, openCell } = gameSlice.actions;
+export const { startGame, openCell, toggleFlag } = gameSlice.actions;
 
 export default gameSlice.reducer;

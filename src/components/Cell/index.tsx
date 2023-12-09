@@ -6,10 +6,11 @@ type CellProps = {
 	cellData: number;
 	cellText: string;
 	onClick: () => void;
+	onContextMenu: (e: React.MouseEvent) => void;
 };
-export default function Cell({ row, col, cellData, cellText, onClick }: CellProps) {
+export default function Cell({ row, col, cellData, cellText, onClick, onContextMenu }: CellProps) {
 	return (
-		<CellBox $cellData={cellData} onClick={onClick}>
+		<CellBox $cellData={cellData} onClick={onClick} onContextMenu={onContextMenu}>
 			{cellText}
 		</CellBox>
 	);

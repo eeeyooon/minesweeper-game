@@ -3,7 +3,7 @@ import Cell from '../Cell';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { useDispatch } from 'react-redux';
-import { openCell } from '../../slices/gameSlice';
+import { openCell, toggleFlag } from '../../slices/gameSlice';
 import { CELL_TYPE, GAME_STATUS } from '../../lib/constants';
 
 export default function Board() {
@@ -17,19 +17,33 @@ export default function Board() {
 		dispatch(openCell({ row, col }));
 	};
 
+	const handleRightClick = (e: React.MouseEvent, row: number, col: number) => {
+		e.preventDefault(); // 기본 오른쪽 클릭 메뉴 방지
+		dispatch(toggleFlag({ row, col }));
+	};
+
 	const getCellText = (cellType: number) => {
 		switch (cellType) {
 			case CELL_TYPE.OPEN:
 			case CELL_TYPE.NOTHING:
 				return '';
 			case CELL_TYPE.FLAG:
-				return '깃발';
+				return '🚩';
+			case CELL_TYPE.MINE_FLAG:
+				switch (gameStatus) {
+					case GAME_STATUS.WIN:
+						return '🎉';
+					case GAME_STATUS.LOSE:
+						return '💣';
+					default:
+						return '🚩';
+				}
 			case CELL_TYPE.MINE:
 				switch (gameStatus) {
 					case GAME_STATUS.WIN:
-						return '찾음';
+						return '🎉';
 					case GAME_STATUS.LOSE:
-						return '지뢰';
+						return '💣';
 					default:
 						return '';
 				}
@@ -53,6 +67,7 @@ export default function Board() {
 					cellData={board[row][col]}
 					cellText={getCellText(board[row][col])}
 					onClick={() => handleCellClick(row, col)}
+					onContextMenu={(e) => handleRightClick(e, row, col)}
 				/>,
 			);
 		}
