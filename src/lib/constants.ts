@@ -4,6 +4,7 @@ export const CELL_TYPE = {
 	FLAG: -2,
 	MINE: -3,
 	MINE_FLAG: -4,
+	UNKNOWN: -5,
 } as const;
 
 export const GAME_STATUS = {

@@ -27,6 +27,15 @@ export default function Board() {
 			case CELL_TYPE.OPEN:
 			case CELL_TYPE.NOTHING:
 				return '';
+			case CELL_TYPE.UNKNOWN:
+				switch (gameStatus) {
+					case GAME_STATUS.WIN:
+						return '🎉';
+					case GAME_STATUS.LOSE:
+						return '💣';
+					default:
+						return '❓';
+				}
 			case CELL_TYPE.FLAG:
 				return '🚩';
 			case CELL_TYPE.MINE_FLAG:
