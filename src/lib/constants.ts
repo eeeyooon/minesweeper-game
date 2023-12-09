@@ -9,4 +9,6 @@ export const CELL_TYPE = {
 export const GAME_STATUS = {
 	WIN: 'win',
 	LOSE: 'lose',
+	PLAYING: 'playing',
+	WAITING: 'waiting',
 } as const;

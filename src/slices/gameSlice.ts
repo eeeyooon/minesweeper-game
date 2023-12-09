@@ -11,7 +11,7 @@ interface GameState {
 	mineCount: number;
 	flagCount: number;
 	openCellCount: number;
-	timer: number;
+	startTime: number;
 	level: 'beginner' | 'intermediate' | 'expert' | 'custom';
 }
 
@@ -23,7 +23,7 @@ const initialState: GameState = {
 	mineCount: 10,
 	flagCount: 0,
 	openCellCount: 0,
-	timer: 0,
+	startTime: 0,
 	level: 'beginner',
 };
 
@@ -39,9 +39,14 @@ export const gameSlice = createSlice({
 			state.mineCount = 10;
 			state.flagCount = 0;
 			state.openCellCount = 0;
-			state.timer = 0;
+			state.startTime = Date.now();
 		},
 		openCell: (state, action: PayloadAction<{ row: number; col: number }>) => {
+			if (state.gameStatus === GAME_STATUS.WAITING) {
+				state.gameStatus = GAME_STATUS.PLAYING;
+				state.startTime = Date.now();
+			}
+
 			const openCellRecursive = (row: number, col: number) => {
 				if (row < 0 || row >= state.rows || col < 0 || col >= state.cols) {
 					return;
