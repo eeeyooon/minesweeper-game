@@ -42,6 +42,10 @@ export const gameSlice = createSlice({
 			state.startTime = Date.now();
 		},
 		openCell: (state, action: PayloadAction<{ row: number; col: number }>) => {
+			if (state.gameStatus === GAME_STATUS.LOSE || state.gameStatus === GAME_STATUS.WIN) {
+				return;
+			}
+
 			if (state.gameStatus === GAME_STATUS.WAITING) {
 				state.gameStatus = GAME_STATUS.PLAYING;
 				state.startTime = Date.now();
