@@ -1,4 +1,4 @@
-export const CELL_FLAG = {
+export const CELL_TYPE = {
 	OPEN: 0,
 	NOTHING: -1,
 	FLAG: -2,

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { CELL_FLAG } from '../../lib/constants';
+import { CELL_TYPE } from '../../lib/constants';
 
 type CellProps = {
 	row: number;
@@ -10,11 +10,11 @@ type CellProps = {
 export default function Cell({ row, col, cellData, onClick }: CellProps) {
 	const getText = (data: number) => {
 		switch (data) {
-			case CELL_FLAG.MINE:
+			case CELL_TYPE.MINE:
 				return '지뢰';
-			case CELL_FLAG.NOTHING:
+			case CELL_TYPE.NOTHING:
 				return '';
-			case CELL_FLAG.OPEN:
+			case CELL_TYPE.OPEN:
 				return '';
 			default:
 				return data;

@@ -1,4 +1,4 @@
-import { CELL_FLAG } from '../../lib/constants';
+import { CELL_TYPE } from '../../lib/constants';
 
 export const findAroundMine = (board: number[][], row: number, col: number): number => {
 	let mineCount = 0;
@@ -14,7 +14,7 @@ export const findAroundMine = (board: number[][], row: number, col: number): num
 			// 보드 범위 안에 있는지 확인
 			if (x >= 0 && x < board[0].length && y >= 0 && y < board.length) {
 				// 해당 셀이 지뢰인 경우 카운트 증가
-				if (board[y][x] === CELL_FLAG.MINE) {
+				if (board[y][x] === CELL_TYPE.MINE) {
 					mineCount++;
 				}
 			}
