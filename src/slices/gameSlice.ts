@@ -42,11 +42,13 @@ export const gameSlice = createSlice({
 			state.startTime = Date.now();
 		},
 		openCell: (state, action: PayloadAction<{ row: number; col: number }>) => {
+			const { row, col } = action.payload;
 			if (state.gameStatus === GAME_STATUS.LOSE || state.gameStatus === GAME_STATUS.WIN) {
 				return;
 			}
 
 			if (state.gameStatus === GAME_STATUS.WAITING) {
+				state.board = initialBoard(state.rows, state.cols, state.mineCount, row, col);
 				state.gameStatus = GAME_STATUS.PLAYING;
 				state.startTime = Date.now();
 			}
