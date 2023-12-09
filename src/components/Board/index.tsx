@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { useDispatch } from 'react-redux';
 import { openCell } from '../../slices/gameSlice';
+import { CELL_TYPE, GAME_STATUS } from '../../lib/constants';
 
 export default function Board() {
 	const dispatch = useDispatch();
@@ -14,6 +15,27 @@ export default function Board() {
 
 	const handleCellClick = (row: number, col: number) => {
 		dispatch(openCell({ row, col }));
+	};
+
+	const getCellText = (cellType: number) => {
+		switch (cellType) {
+			case CELL_TYPE.OPEN:
+			case CELL_TYPE.NOTHING:
+				return '';
+			case CELL_TYPE.FLAG:
+				return '깃발';
+			case CELL_TYPE.MINE:
+				switch (gameStatus) {
+					case GAME_STATUS.WIN:
+						return '찾음';
+					case GAME_STATUS.LOSE:
+						return '지뢰';
+					default:
+						return '';
+				}
+			default:
+				return cellType.toString();
+		}
 	};
 
 	const createBoard = () => {
@@ -29,6 +51,7 @@ export default function Board() {
 					row={row}
 					col={col}
 					cellData={board[row][col]}
+					cellText={getCellText(board[row][col])}
 					onClick={() => handleCellClick(row, col)}
 				/>,
 			);
