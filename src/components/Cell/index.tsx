@@ -16,13 +16,13 @@ export default function Cell({ row, col, cellData, cellText, onClick }: CellProp
 }
 
 const CellBox = styled.div<{ $cellData: number }>`
-	width: 20px;
-	height: 20px;
+	width: 40px;
+	height: 40px;
 	background-color: ${({ theme, $cellData }) => ($cellData >= 0 ? theme.color.selectedCell : theme.color.cell)};
 	margin: 2px;
-	line-height: 20px;
+	line-height: 40px;
 	color: ${({ theme }) => theme.color.black};
 	text-align: center;
-	font-size: 10px;
+	font-size: 20px;
 	cursor: pointer;
 `;

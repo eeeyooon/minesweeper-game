@@ -60,8 +60,8 @@ export default function Board() {
 		return cells;
 	};
 
-	const boardWidth = rows * 24;
-	const boardHeight = cols * 24;
+	const boardWidth = rows * 44;
+	const boardHeight = cols * 44;
 
 	return (
 		<BoardWrapper $boardWidth={boardWidth} $boardHeight={boardHeight}>

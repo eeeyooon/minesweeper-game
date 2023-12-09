@@ -43,14 +43,14 @@ const GameHeader = styled.header`
 `;
 const GameTitle = styled.h1`
 	text-align: center;
-	font-size: 1.25rem;
+	font-size: 2.5rem;
 	margin-bottom: 10px;
 `;
 
 const GameStatus = styled.p`
 	text-align: center;
 	height: 10px;
-	font-size: 14px;
+	font-size: 20px;
 `;
 
 const HeaderMenu = styled.div`
@@ -61,15 +61,16 @@ const HeaderMenu = styled.div`
 
 const TimerBox = styled.div`
 	width: 60px;
-	/* border: 1px solid ${({ theme }) => theme.color.white}; */
 	text-align: center;
 	padding: 3px;
-	font-size: 12px;
+	font-size: 20px;
 `;
 
 const ResetButton = styled.button`
 	background-color: ${({ theme }) => theme.color.green};
-	padding: 5px;
+	color: ${({ theme }) => theme.color.white};
+	font-weight: 600;
+	padding: 8px;
 	border-radius: 5px;
-	font-size: 14px;
+	font-size: 18px;
 `;
