@@ -8,7 +8,7 @@ import { GameHeader, GameStatus, GameTitle, HeaderMenu, MineCount, ResetButton, 
 export default function Header() {
 	const dispatch = useDispatch();
 	const [timer, setTimer] = useState(0);
-	const { gameStatus, startTime, mineCount, allFlagCount } = useSelector((state: RootState) => state.game);
+	const { gameStatus, startTime, mineCount, allFlagCount, level } = useSelector((state: RootState) => state.game);
 
 	useEffect(() => {
 		if (gameStatus === GAME_STATUS.PLAYING && startTime) {
@@ -18,6 +18,10 @@ export default function Header() {
 			return () => clearInterval(interval);
 		}
 	}, [gameStatus, startTime]);
+
+	useEffect(() => {
+		setTimer(0);
+	}, [level]);
 
 	const handleReset = () => {
 		dispatch(startGame());

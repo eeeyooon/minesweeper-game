@@ -13,16 +13,22 @@ import {
 	SelectLevelWrapper,
 	SizeInput,
 } from './styles';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 export default function Menu() {
 	const dispatch = useDispatch();
+	const level = useSelector((state: RootState) => state.game.level);
 	const [rows, setRows] = useState(0);
 	const [cols, setCols] = useState(0);
 	const [mines, setMines] = useState(0);
 	const [info, setInfo] = useState(' ');
+	const [selectedLevel, setSelectedLevel] = useState('beginner');
 
 	const handleSelectLevel = (level: 'beginner' | 'intermediate' | 'expert') => {
 		dispatch(selectLevel({ level }));
+		setSelectedLevel(level);
+		setSelectedLevel(level);
 		setInfo(' ');
 		setRows(0);
 		setCols(0);
@@ -37,6 +43,7 @@ export default function Menu() {
 		} else {
 			setInfo(' ');
 			dispatch(customLevel({ rows, cols, mineCount: mines }));
+			setSelectedLevel('');
 		}
 	};
 
@@ -45,9 +52,24 @@ export default function Menu() {
 			<SelectLevelWrapper>
 				<span>Level</span>
 				<SelectLevelBox>
-					<LevelButton onClick={() => handleSelectLevel(GAME_LEVEL.BEGINNER)}>Beginner</LevelButton>
-					<LevelButton onClick={() => handleSelectLevel(GAME_LEVEL.INTERMEDIATE)}>Intermediate</LevelButton>
-					<LevelButton onClick={() => handleSelectLevel(GAME_LEVEL.EXPERT)}>Expert</LevelButton>
+					<LevelButton
+						onClick={() => handleSelectLevel(GAME_LEVEL.BEGINNER)}
+						$selected={selectedLevel === GAME_LEVEL.BEGINNER}
+					>
+						Beginner
+					</LevelButton>
+					<LevelButton
+						onClick={() => handleSelectLevel(GAME_LEVEL.INTERMEDIATE)}
+						$selected={selectedLevel === GAME_LEVEL.INTERMEDIATE}
+					>
+						Intermediate
+					</LevelButton>
+					<LevelButton
+						onClick={() => handleSelectLevel(GAME_LEVEL.EXPERT)}
+						$selected={selectedLevel === GAME_LEVEL.EXPERT}
+					>
+						Expert
+					</LevelButton>
 				</SelectLevelBox>
 			</SelectLevelWrapper>
 			<CustomLevelWrapper>

@@ -30,13 +30,13 @@ export const SelectLevelWrapper = styled.div`
 
 export const SelectLevelBox = styled.div``;
 
-export const LevelButton = styled.button`
+export const LevelButton = styled.button<{ $selected: boolean }>`
 	border: 1px solid ${({ theme }) => theme.color.white};
 	border-radius: 5px;
 	padding: 5px;
 	margin-left: 5px;
 	font-size: 17px;
-	background-color: ${({ theme }) => theme.color.orange};
+	background-color: ${({ $selected, theme }) => ($selected ? theme.color.green : theme.color.orange)};
 	margin-bottom: 10px;
 `;
 
