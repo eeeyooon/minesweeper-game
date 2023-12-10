@@ -10,7 +10,8 @@ interface GameState {
 	cols: number;
 	gameStatus: 'waiting' | 'playing' | 'win' | 'lose';
 	mineCount: number;
-	flagCount: number;
+	allFlagCount: number;
+	mineFlagCount: number;
 	openCellCount: number;
 	startTime: number;
 	level: 'beginner' | 'intermediate' | 'expert' | 'custom';
@@ -23,7 +24,8 @@ const initialState: GameState = {
 	cols: 8,
 	gameStatus: 'waiting',
 	mineCount: 10,
-	flagCount: 0,
+	allFlagCount: 0,
+	mineFlagCount: 0,
 	openCellCount: 0,
 	startTime: 0,
 	level: 'beginner',
@@ -40,7 +42,8 @@ export const gameSlice = createSlice({
 			state.cols = 8;
 			state.gameStatus = 'waiting';
 			state.mineCount = 10;
-			state.flagCount = 0;
+			state.allFlagCount = 0;
+			state.mineFlagCount = 0;
 			state.openCellCount = 0;
 			state.startTime = Date.now();
 		},
@@ -109,18 +112,22 @@ export const gameSlice = createSlice({
 				case CELL_TYPE.MINE:
 					state.previousStates[row][col] = cell;
 					state.board[row][col] = CELL_TYPE.MINE_FLAG;
-					state.flagCount += 1;
+					state.allFlagCount += 1;
+					state.mineFlagCount += 1;
 					break;
 				case CELL_TYPE.MINE_FLAG:
 					state.board[row][col] = CELL_TYPE.UNKNOWN;
-					state.flagCount -= 1;
+					state.allFlagCount -= 1;
+					state.mineFlagCount -= 1;
 					break;
 				case CELL_TYPE.NOTHING:
 					state.previousStates[row][col] = cell;
 					state.board[row][col] = CELL_TYPE.FLAG;
+					state.allFlagCount += 1;
 					break;
 				case CELL_TYPE.FLAG:
 					state.board[row][col] = CELL_TYPE.UNKNOWN;
+					state.allFlagCount -= 1;
 					break;
 				case CELL_TYPE.UNKNOWN:
 					state.board[row][col] = state.previousStates[row][col];
@@ -130,7 +137,7 @@ export const gameSlice = createSlice({
 			}
 
 			// 승리 조건
-			if (state.flagCount === state.mineCount) {
+			if (state.mineFlagCount === state.mineCount) {
 				state.gameStatus = GAME_STATUS.WIN;
 			}
 		},

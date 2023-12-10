@@ -9,7 +9,7 @@ import { GAME_STATUS } from '../../lib/constants';
 export default function Header() {
 	const dispatch = useDispatch();
 	const [timer, setTimer] = useState(0);
-	const { gameStatus, startTime } = useSelector((state: RootState) => state.game);
+	const { gameStatus, startTime, mineCount, allFlagCount } = useSelector((state: RootState) => state.game);
 
 	useEffect(() => {
 		if (gameStatus === GAME_STATUS.PLAYING && startTime) {
@@ -33,6 +33,7 @@ export default function Header() {
 				<TimerBox>{timer}초</TimerBox>
 				<ResetButton onClick={handleReset}>Reset</ResetButton>
 			</HeaderMenu>
+			<MineCount>💣 {gameStatus === GAME_STATUS.WAITING ? 0 : mineCount - allFlagCount}개</MineCount>
 		</GameHeader>
 	);
 }
@@ -74,3 +75,5 @@ const ResetButton = styled.button`
 	border-radius: 5px;
 	font-size: 18px;
 `;
+
+const MineCount = styled.div``;
