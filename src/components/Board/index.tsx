@@ -19,7 +19,7 @@ export default function Board() {
 	};
 
 	const handleRightClick = (e: React.MouseEvent, row: number, col: number) => {
-		e.preventDefault(); // 기본 오른쪽 클릭 메뉴 방지
+		e.preventDefault();
 		dispatch(toggleFlag({ row, col }));
 	};
 
@@ -81,10 +81,6 @@ export default function Board() {
 		return cells;
 	};
 
-	// const boardWidth = cols * 44;
-	// const boardHeight = rows * 44;
-	//$boardWidth={boardWidth} $boardHeight={boardHeight}
-
 	return (
 		<BoardWrapper $rows={rows} $cols={cols}>
 			{createBoard()}
@@ -94,11 +90,6 @@ export default function Board() {
 
 const BoardWrapper = styled.div<{ $rows: number; $cols: number }>`
 	background-color: ${({ theme }) => theme.color.background};
-	/* display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	align-items: center;*/
-
 	display: grid;
 	grid-template-columns: repeat(${({ $rows }) => $rows}, 40px);
 	grid-template-rows: repeat(${({ $cols }) => $cols}, 40px);

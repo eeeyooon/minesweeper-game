@@ -13,3 +13,10 @@ export const GAME_STATUS = {
 	PLAYING: 'playing',
 	WAITING: 'waiting',
 } as const;
+
+export const GAME_LEVEL = {
+	BEGINNER: 'beginner',
+	INTERMEDIATE: 'intermediate',
+	EXPERT: 'expert',
+	CUSTOM: 'custom',
+} as const;

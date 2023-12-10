@@ -1,6 +1,7 @@
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { selectLevel } from '../../slices/gameSlice';
+import { GAME_LEVEL } from '../../lib/constants';
 
 export default function Menu() {
 	const dispatch = useDispatch();
@@ -12,15 +13,17 @@ export default function Menu() {
 	return (
 		<MenuWrapper>
 			<SelectLevelWrapper>
-				<LevelButton onClick={() => handleSelectLevel('beginner')}>Beginner</LevelButton>
-				<LevelButton onClick={() => handleSelectLevel('intermediate')}>Intermediate</LevelButton>
-				<LevelButton onClick={() => handleSelectLevel('expert')}>Expert</LevelButton>
+				<LevelButton onClick={() => handleSelectLevel(GAME_LEVEL.BEGINNER)}>Beginner</LevelButton>
+				<LevelButton onClick={() => handleSelectLevel(GAME_LEVEL.INTERMEDIATE)}>Intermediate</LevelButton>
+				<LevelButton onClick={() => handleSelectLevel(GAME_LEVEL.EXPERT)}>Expert</LevelButton>
 			</SelectLevelWrapper>
 			<CustomLevelWrapper>
-				size
+				BoardSize
 				<SizeInput type="number" name="rowInput" />
 				x
 				<SizeInput type="number" name="colInput" />
+				💣
+				<MineInput type="number" name="mineInput" />
 			</CustomLevelWrapper>
 		</MenuWrapper>
 	);
@@ -62,4 +65,12 @@ const SizeInput = styled.input`
 	border: none;
 	border-radius: 5px;
 	outline: none;
+`;
+
+const MineInput = styled.input`
+	outline: none;
+	width: 40px;
+	border: none;
+	height: 25px;
+	border-radius: 5px;
 `;

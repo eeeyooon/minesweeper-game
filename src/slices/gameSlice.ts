@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { initialBoard } from '../lib/game';
-import { CELL_TYPE, GAME_STATUS } from '../lib/constants';
+import { CELL_TYPE, GAME_LEVEL, GAME_STATUS } from '../lib/constants';
 import { findAroundMine } from '../components/service/minesweeper';
 
 interface GameState {
@@ -37,17 +37,17 @@ export const gameSlice = createSlice({
 	reducers: {
 		startGame: (state): void => {
 			switch (state.level) {
-				case 'beginner':
+				case GAME_LEVEL.BEGINNER:
 					state.rows = 8;
 					state.cols = 8;
 					state.mineCount = 10;
 					break;
-				case 'intermediate':
+				case GAME_LEVEL.INTERMEDIATE:
 					state.rows = 16;
 					state.cols = 16;
 					state.mineCount = 40;
 					break;
-				case 'expert':
+				case GAME_LEVEL.CUSTOM:
 					state.rows = 32;
 					state.cols = 16;
 					state.mineCount = 100;
@@ -56,7 +56,7 @@ export const gameSlice = createSlice({
 
 			state.board = initialBoard(state.cols, state.rows, state.mineCount);
 			state.previousStates = Array.from({ length: state.cols }, () => Array(state.rows).fill(CELL_TYPE.NOTHING));
-			state.gameStatus = 'waiting';
+			state.gameStatus = GAME_STATUS.WAITING;
 			state.allFlagCount = 0;
 			state.mineFlagCount = 0;
 			state.openCellCount = 0;
@@ -160,23 +160,23 @@ export const gameSlice = createSlice({
 			const { level } = action.payload;
 
 			switch (level) {
-				case 'beginner':
+				case GAME_LEVEL.BEGINNER:
 					state.rows = 8;
 					state.cols = 8;
 					state.mineCount = 10;
-					state.level = 'beginner';
+					state.level = GAME_LEVEL.BEGINNER;
 					break;
-				case 'intermediate':
+				case GAME_LEVEL.INTERMEDIATE:
 					state.rows = 16;
 					state.cols = 16;
 					state.mineCount = 40;
-					state.level = 'intermediate';
+					state.level = GAME_LEVEL.INTERMEDIATE;
 					break;
-				case 'expert':
+				case GAME_LEVEL.EXPERT:
 					state.rows = 32;
 					state.cols = 16;
 					state.mineCount = 100;
-					state.level = 'expert';
+					state.level = GAME_LEVEL.EXPERT;
 					break;
 				default:
 					break;
@@ -184,7 +184,7 @@ export const gameSlice = createSlice({
 
 			state.board = initialBoard(state.cols, state.rows, state.mineCount);
 			state.previousStates = Array.from({ length: state.cols }, () => Array(state.rows).fill(CELL_TYPE.NOTHING));
-			state.gameStatus = 'waiting';
+			state.gameStatus = GAME_STATUS.WAITING;
 			state.allFlagCount = 0;
 			state.mineFlagCount = 0;
 			state.openCellCount = 0;
