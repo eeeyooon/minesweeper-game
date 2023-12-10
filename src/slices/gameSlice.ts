@@ -6,8 +6,8 @@ import { findAroundMine } from '../components/service/minesweeper';
 interface GameState {
 	board: number[][];
 	previousStates: number[][];
-	rows: number;
 	cols: number;
+	rows: number;
 	gameStatus: 'waiting' | 'playing' | 'win' | 'lose';
 	mineCount: number;
 	allFlagCount: number;
@@ -20,8 +20,8 @@ interface GameState {
 const initialState: GameState = {
 	board: initialBoard(8, 8, 10) as number[][],
 	previousStates: Array.from({ length: 8 }, () => Array(8).fill(CELL_TYPE.NOTHING)),
-	rows: 8,
 	cols: 8,
+	rows: 8,
 	gameStatus: 'waiting',
 	mineCount: 10,
 	allFlagCount: 0,
@@ -36,10 +36,10 @@ export const gameSlice = createSlice({
 	initialState,
 	reducers: {
 		startGame: (state): void => {
-			state.board = initialBoard(state.rows, state.cols, state.mineCount);
-			state.previousStates = Array.from({ length: state.rows }, () => Array(state.cols).fill(CELL_TYPE.NOTHING));
-			state.rows = 8;
+			state.board = initialBoard(state.cols, state.rows, state.mineCount);
+			state.previousStates = Array.from({ length: state.cols }, () => Array(state.rows).fill(CELL_TYPE.NOTHING));
 			state.cols = 8;
+			state.rows = 8;
 			state.gameStatus = 'waiting';
 			state.mineCount = 10;
 			state.allFlagCount = 0;
@@ -54,13 +54,13 @@ export const gameSlice = createSlice({
 			}
 
 			if (state.gameStatus === GAME_STATUS.WAITING) {
-				state.board = initialBoard(state.rows, state.cols, state.mineCount, row, col);
+				state.board = initialBoard(state.cols, state.rows, state.mineCount, row, col);
 				state.gameStatus = GAME_STATUS.PLAYING;
 				state.startTime = Date.now();
 			}
 
 			const openCellRecursive = (row: number, col: number) => {
-				if (row < 0 || row >= state.rows || col < 0 || col >= state.cols) {
+				if (row < 0 || row >= state.cols || col < 0 || col >= state.rows) {
 					return;
 				}
 
@@ -97,7 +97,7 @@ export const gameSlice = createSlice({
 
 			// 승리 조건
 			const isWin =
-				state.openCellCount === state.rows * state.cols - state.mineCount &&
+				state.openCellCount === state.cols * state.rows - state.mineCount &&
 				!state.board.some((row) => row.some((cell) => cell === CELL_TYPE.UNKNOWN));
 
 			if (isWin) {
@@ -141,9 +141,43 @@ export const gameSlice = createSlice({
 				state.gameStatus = GAME_STATUS.WIN;
 			}
 		},
+		selectLevel: (state, action: PayloadAction<{ level: 'beginner' | 'intermediate' | 'expert' }>) => {
+			const { level } = action.payload;
+
+			switch (level) {
+				case 'beginner':
+					state.rows = 8;
+					state.cols = 8;
+					state.mineCount = 10;
+					state.level = 'beginner';
+					break;
+				case 'intermediate':
+					state.rows = 16;
+					state.cols = 16;
+					state.mineCount = 40;
+					state.level = 'intermediate';
+					break;
+				case 'expert':
+					state.rows = 32;
+					state.cols = 16;
+					state.mineCount = 100;
+					state.level = 'expert';
+					break;
+				default:
+					break;
+			}
+
+			state.board = initialBoard(state.cols, state.rows, state.mineCount);
+			state.previousStates = Array.from({ length: state.cols }, () => Array(state.rows).fill(CELL_TYPE.NOTHING));
+			state.gameStatus = 'waiting';
+			state.allFlagCount = 0;
+			state.mineFlagCount = 0;
+			state.openCellCount = 0;
+			state.startTime = 0;
+		},
 	},
 });
 
-export const { startGame, openCell, toggleFlag } = gameSlice.actions;
+export const { startGame, openCell, toggleFlag, selectLevel } = gameSlice.actions;
 
 export default gameSlice.reducer;

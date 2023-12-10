@@ -1,12 +1,20 @@
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { selectLevel } from '../../slices/gameSlice';
 
 export default function Menu() {
+	const dispatch = useDispatch();
+
+	const handleSelectLevel = (level: 'beginner' | 'intermediate' | 'expert') => {
+		dispatch(selectLevel({ level }));
+	};
+
 	return (
 		<MenuWrapper>
 			<SelectLevelWrapper>
-				<LevelButton>Beginner</LevelButton>
-				<LevelButton>Intermediate</LevelButton>
-				<LevelButton>Expert</LevelButton>
+				<LevelButton onClick={() => handleSelectLevel('beginner')}>Beginner</LevelButton>
+				<LevelButton onClick={() => handleSelectLevel('intermediate')}>Intermediate</LevelButton>
+				<LevelButton onClick={() => handleSelectLevel('expert')}>Expert</LevelButton>
 			</SelectLevelWrapper>
 			<CustomLevelWrapper>
 				size
