@@ -36,27 +36,31 @@ export const gameSlice = createSlice({
 	initialState,
 	reducers: {
 		startGame: (state): void => {
-			switch (state.level) {
-				case GAME_LEVEL.BEGINNER:
-					state.rows = 8;
-					state.cols = 8;
-					state.mineCount = 10;
-					break;
-				case GAME_LEVEL.INTERMEDIATE:
-					state.rows = 16;
-					state.cols = 16;
-					state.mineCount = 40;
-					break;
-				case GAME_LEVEL.CUSTOM:
-					state.rows = 32;
-					state.cols = 16;
-					state.mineCount = 100;
-					break;
+			if (state.level === GAME_LEVEL.CUSTOM) {
+				state.board = initialBoard(state.cols, state.rows, state.mineCount);
+				state.previousStates = Array.from({ length: state.cols }, () => Array(state.rows).fill(CELL_TYPE.NOTHING));
+			} else {
+				switch (state.level) {
+					case GAME_LEVEL.BEGINNER:
+						state.rows = 8;
+						state.cols = 8;
+						state.mineCount = 10;
+						break;
+					case GAME_LEVEL.INTERMEDIATE:
+						state.rows = 16;
+						state.cols = 16;
+						state.mineCount = 40;
+						break;
+					case GAME_LEVEL.EXPERT:
+						state.rows = 32;
+						state.cols = 16;
+						state.mineCount = 100;
+						break;
+				}
+				state.board = initialBoard(state.cols, state.rows, state.mineCount);
+				state.previousStates = Array.from({ length: state.cols }, () => Array(state.rows).fill(CELL_TYPE.NOTHING));
 			}
-
-			state.board = initialBoard(state.cols, state.rows, state.mineCount);
-			state.previousStates = Array.from({ length: state.cols }, () => Array(state.rows).fill(CELL_TYPE.NOTHING));
-			state.gameStatus = GAME_STATUS.WAITING;
+			state.gameStatus = 'waiting';
 			state.allFlagCount = 0;
 			state.mineFlagCount = 0;
 			state.openCellCount = 0;
