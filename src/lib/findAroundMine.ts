@@ -1,4 +1,4 @@
-import { CELL_TYPE } from '../../lib/constants';
+import { CELL_TYPE } from './constants';
 
 export const findAroundMine = (board: number[][], previousStates: number[][], row: number, col: number): number => {
 	let mineCount = 0;

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { initialBoard } from '../lib/game';
+import { initialBoard } from '../lib/initialBoard';
 import { CELL_TYPE, GAME_LEVEL, GAME_STATUS } from '../lib/constants';
-import { findAroundMine } from '../components/service/minesweeper';
+import { findAroundMine } from '../lib/findAroundMine';
 
 interface GameState {
 	board: number[][];
@@ -114,7 +114,7 @@ export const gameSlice = createSlice({
 
 			openCellRecursive(row, col);
 
-			// 승리 조건
+			// 승리조건
 			const isWin =
 				state.openCellCount === state.cols * state.rows - state.mineCount &&
 				!state.board.some((row) => row.some((cell) => cell === CELL_TYPE.UNKNOWN));
@@ -156,7 +156,10 @@ export const gameSlice = createSlice({
 			}
 
 			// 승리 조건
-			if (state.mineFlagCount === state.mineCount) {
+			if (
+				state.openCellCount === state.cols * state.rows - state.mineCount &&
+				state.mineFlagCount === state.mineCount
+			) {
 				state.gameStatus = GAME_STATUS.WIN;
 			}
 		},
