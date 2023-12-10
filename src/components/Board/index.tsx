@@ -1,18 +1,16 @@
-import styled from 'styled-components';
 import Cell from '../Cell';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store';
-import { useDispatch } from 'react-redux';
 import { openCell, toggleFlag } from '../../slices/gameSlice';
 import { CELL_TYPE, GAME_STATUS } from '../../lib/constants';
+import { BoardWrapper } from './styles';
 
 export default function Board() {
 	const dispatch = useDispatch();
 	const game = useSelector((state: RootState) => state.game);
 	const { cols, rows, board, gameStatus, previousStates } = game;
-	console.log(game);
 
-	const handleCellClick = (row: number, col: number) => {
+	const handleLeftClick = (row: number, col: number) => {
 		dispatch(openCell({ row, col }));
 	};
 
@@ -66,11 +64,9 @@ export default function Board() {
 			cells.push(
 				<Cell
 					key={`${row}-${col}`}
-					row={row}
-					col={col}
 					cellData={board[row][col]}
 					cellText={getCellText(board[row][col], row, col)}
-					onClick={() => handleCellClick(row, col)}
+					onClick={() => handleLeftClick(row, col)}
 					onContextMenu={(e) => handleRightClick(e, row, col)}
 				/>,
 			);
@@ -85,13 +81,3 @@ export default function Board() {
 		</BoardWrapper>
 	);
 }
-
-const BoardWrapper = styled.div<{ $rows: number; $cols: number }>`
-	background-color: ${({ theme }) => theme.color.background};
-	display: grid;
-	grid-template-columns: repeat(${({ $rows }) => $rows}, 40px);
-	grid-template-rows: repeat(${({ $cols }) => $cols}, 40px);
-	grid-gap: 2px; // 셀 사이의 간격을 추가
-	justify-content: center;
-	margin: 20px auto 10px auto;
-`;
