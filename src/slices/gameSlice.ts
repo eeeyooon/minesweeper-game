@@ -71,7 +71,7 @@ export const gameSlice = createSlice({
 					return;
 				}
 
-				const mineCount = findAroundMine(state.board, row, col);
+				const mineCount = findAroundMine(state.board, state.previousStates, row, col);
 				if (state.board[row][col] === CELL_TYPE.NOTHING) {
 					state.board[row][col] = mineCount > 0 ? mineCount : CELL_TYPE.OPEN;
 					state.openCellCount++;
