@@ -9,12 +9,13 @@ import { CELL_TYPE, GAME_STATUS } from '../../lib/constants';
 export default function Board() {
 	const dispatch = useDispatch();
 	const game = useSelector((state: RootState) => state.game);
-	const { rows, cols, board, gameStatus, previousStates } = game;
+	const { cols, rows, board, gameStatus, previousStates } = game;
 	console.log(gameStatus);
 	console.log(game);
 
 	const handleCellClick = (row: number, col: number) => {
 		dispatch(openCell({ row, col }));
+		console.log(row, col);
 	};
 
 	const handleRightClick = (e: React.MouseEvent, row: number, col: number) => {
@@ -58,12 +59,12 @@ export default function Board() {
 	};
 
 	const createBoard = () => {
-		const totalCells = rows * cols;
+		const totalCells = cols * rows;
 		const cells = [];
 
 		for (let i = 0; i < totalCells; i++) {
-			const col = i % cols;
-			const row = Math.floor(i / cols);
+			const col = i % rows;
+			const row = Math.floor(i / rows);
 			cells.push(
 				<Cell
 					key={`${row}-${col}`}
@@ -80,23 +81,27 @@ export default function Board() {
 		return cells;
 	};
 
-	const boardWidth = rows * 44;
-	const boardHeight = cols * 44;
+	// const boardWidth = cols * 44;
+	// const boardHeight = rows * 44;
+	//$boardWidth={boardWidth} $boardHeight={boardHeight}
 
 	return (
-		<BoardWrapper $boardWidth={boardWidth} $boardHeight={boardHeight}>
+		<BoardWrapper $rows={rows} $cols={cols}>
 			{createBoard()}
 		</BoardWrapper>
 	);
 }
 
-const BoardWrapper = styled.div<{ $boardWidth: number; $boardHeight: number }>`
+const BoardWrapper = styled.div<{ $rows: number; $cols: number }>`
 	background-color: ${({ theme }) => theme.color.background};
-	display: flex;
+	/* display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
-	align-items: center;
-	width: ${({ $boardWidth }) => `${$boardWidth}px`};
-	height: ${({ $boardHeight }) => `${$boardHeight}px`};
+	align-items: center;*/
+
+	display: grid;
+	grid-template-columns: repeat(${({ $rows }) => $rows}, 40px);
+	grid-template-rows: repeat(${({ $cols }) => $cols}, 40px);
+	grid-gap: 2px; // 셀 사이의 간격을 추가
 	margin: 20px auto 10px auto;
 `;

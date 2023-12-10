@@ -2,20 +2,20 @@ import { CELL_TYPE } from './constants';
 
 // 게임 보드 초기화 및 생성
 export const initialBoard = (
-	rows: number,
 	cols: number,
+	rows: number,
 	mineCount: number,
 	firstClickRow?: number,
 	firstClickCol?: number,
 ): number[][] => {
-	const totalCells = rows * cols;
+	const totalCells = cols * rows;
 	const temporary: number[] = Array.from({ length: totalCells }, (_, i) => i);
 	const mineLocation: number[] = [];
-	const resultBoard: number[][] = Array.from({ length: rows }, () => Array(cols).fill(CELL_TYPE.NOTHING));
+	const resultBoard: number[][] = Array.from({ length: cols }, () => Array(rows).fill(CELL_TYPE.NOTHING));
 
 	// 첫 번째 클릭 위치가 전달 되면, 해당 위치엔 지뢰가 없도록 적용
 	if (firstClickRow !== undefined && firstClickCol !== undefined) {
-		const firstClickIndex = firstClickRow * cols + firstClickCol;
+		const firstClickIndex = firstClickRow * rows + firstClickCol;
 		temporary.splice(firstClickIndex, 1);
 		resultBoard[firstClickRow][firstClickCol] = CELL_TYPE.NOTHING;
 	}
@@ -29,8 +29,8 @@ export const initialBoard = (
 
 	// 지뢰 배치
 	for (const mineCell of mineLocation) {
-		const x = mineCell % cols;
-		const y = Math.floor(mineCell / cols);
+		const x = mineCell % rows;
+		const y = Math.floor(mineCell / rows);
 		resultBoard[y][x] = CELL_TYPE.MINE;
 	}
 
