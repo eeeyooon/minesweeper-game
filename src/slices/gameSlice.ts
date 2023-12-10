@@ -36,12 +36,27 @@ export const gameSlice = createSlice({
 	initialState,
 	reducers: {
 		startGame: (state): void => {
+			switch (state.level) {
+				case 'beginner':
+					state.rows = 8;
+					state.cols = 8;
+					state.mineCount = 10;
+					break;
+				case 'intermediate':
+					state.rows = 16;
+					state.cols = 16;
+					state.mineCount = 40;
+					break;
+				case 'expert':
+					state.rows = 32;
+					state.cols = 16;
+					state.mineCount = 100;
+					break;
+			}
+
 			state.board = initialBoard(state.cols, state.rows, state.mineCount);
 			state.previousStates = Array.from({ length: state.cols }, () => Array(state.rows).fill(CELL_TYPE.NOTHING));
-			state.cols = 8;
-			state.rows = 8;
 			state.gameStatus = 'waiting';
-			state.mineCount = 10;
 			state.allFlagCount = 0;
 			state.mineFlagCount = 0;
 			state.openCellCount = 0;
