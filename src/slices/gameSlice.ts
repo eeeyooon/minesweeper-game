@@ -190,9 +190,23 @@ export const gameSlice = createSlice({
 			state.openCellCount = 0;
 			state.startTime = 0;
 		},
+		customLevel: (state, action: PayloadAction<{ rows: number; cols: number; mineCount: number }>) => {
+			const { rows, cols, mineCount } = action.payload;
+			state.level = 'custom';
+			state.rows = rows;
+			state.cols = cols;
+			state.mineCount = mineCount;
+			state.board = initialBoard(cols, rows, mineCount);
+			state.previousStates = Array.from({ length: cols }, () => Array(rows).fill(CELL_TYPE.NOTHING));
+			state.gameStatus = 'waiting';
+			state.allFlagCount = 0;
+			state.mineFlagCount = 0;
+			state.openCellCount = 0;
+			state.startTime = 0;
+		},
 	},
 });
 
-export const { startGame, openCell, toggleFlag, selectLevel } = gameSlice.actions;
+export const { startGame, openCell, toggleFlag, selectLevel, customLevel } = gameSlice.actions;
 
 export default gameSlice.reducer;

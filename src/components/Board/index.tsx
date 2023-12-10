@@ -10,12 +10,10 @@ export default function Board() {
 	const dispatch = useDispatch();
 	const game = useSelector((state: RootState) => state.game);
 	const { cols, rows, board, gameStatus, previousStates } = game;
-	console.log(gameStatus);
 	console.log(game);
 
 	const handleCellClick = (row: number, col: number) => {
 		dispatch(openCell({ row, col }));
-		console.log(row, col);
 	};
 
 	const handleRightClick = (e: React.MouseEvent, row: number, col: number) => {
