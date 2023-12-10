@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { startGame } from '../../slices/gameSlice';
@@ -23,10 +23,10 @@ export default function Header() {
 		setTimer(0);
 	}, [level]);
 
-	const handleReset = () => {
+	const handleReset = useCallback(() => {
 		dispatch(startGame());
 		setTimer(0);
-	};
+	}, [dispatch]);
 
 	return (
 		<GameHeader>

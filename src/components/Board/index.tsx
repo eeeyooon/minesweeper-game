@@ -4,6 +4,7 @@ import { RootState } from '../../store';
 import { openCell, toggleFlag } from '../../slices/gameSlice';
 import { CELL_TYPE, GAME_STATUS } from '../../lib/constants';
 import { BoardWrapper } from './styles';
+import { useMemo } from 'react';
 
 export default function Board() {
 	const dispatch = useDispatch();
@@ -54,7 +55,7 @@ export default function Board() {
 		}
 	};
 
-	const createBoard = () => {
+	const createBoard = useMemo(() => {
 		const totalCells = cols * rows;
 		const cells = [];
 
@@ -73,11 +74,11 @@ export default function Board() {
 		}
 
 		return cells;
-	};
+	}, [cols, rows, board, gameStatus, previousStates]);
 
 	return (
 		<BoardWrapper $rows={rows} $cols={cols}>
-			{createBoard()}
+			{createBoard}
 		</BoardWrapper>
 	);
 }

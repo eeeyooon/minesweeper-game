@@ -1,3 +1,4 @@
+import React from 'react';
 import { CellBox } from './styles';
 
 type CellProps = {
@@ -6,10 +7,14 @@ type CellProps = {
 	onClick: () => void;
 	onContextMenu: (e: React.MouseEvent) => void;
 };
-export default function Cell({ cellData, cellText, onClick, onContextMenu }: CellProps) {
+
+const Cell = React.memo(({ cellData, cellText, onClick, onContextMenu }: CellProps) => {
 	return (
 		<CellBox $cellData={cellData} onClick={onClick} onContextMenu={onContextMenu}>
 			{cellText}
 		</CellBox>
 	);
-}
+});
+
+Cell.displayName = 'Cell';
+export default Cell;
