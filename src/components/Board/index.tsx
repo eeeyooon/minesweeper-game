@@ -92,5 +92,6 @@ const BoardWrapper = styled.div<{ $rows: number; $cols: number }>`
 	grid-template-columns: repeat(${({ $rows }) => $rows}, 40px);
 	grid-template-rows: repeat(${({ $cols }) => $cols}, 40px);
 	grid-gap: 2px; // 셀 사이의 간격을 추가
+	justify-content: center;
 	margin: 20px auto 10px auto;
 `;

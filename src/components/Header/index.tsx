@@ -28,12 +28,24 @@ export default function Header() {
 	return (
 		<GameHeader>
 			<GameTitle>Minesweeper</GameTitle>
-			<GameStatus>{gameStatus}</GameStatus>
+			<GameStatus>
+				{gameStatus === GAME_STATUS.WAITING
+					? '😎 Ready'
+					: gameStatus === GAME_STATUS.PLAYING
+					  ? '🔥 Playing'
+					  : gameStatus === GAME_STATUS.WIN
+					    ? '😋 Win'
+					    : '😅 Lose'}
+			</GameStatus>
 			<HeaderMenu>
-				<TimerBox>{timer}초</TimerBox>
+				<TimerBox>
+					<span>⏱</span> {timer}
+				</TimerBox>
 				<ResetButton onClick={handleReset}>Reset</ResetButton>
 			</HeaderMenu>
-			<MineCount>💣 {gameStatus === GAME_STATUS.WAITING ? 0 : mineCount - allFlagCount}개</MineCount>
+			<MineCount>
+				<span>💣</span> {gameStatus === GAME_STATUS.WAITING ? 0 : mineCount - allFlagCount}
+			</MineCount>
 		</GameHeader>
 	);
 }
@@ -45,13 +57,14 @@ const GameHeader = styled.header`
 const GameTitle = styled.h1`
 	text-align: center;
 	font-size: 2.5rem;
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 `;
 
 const GameStatus = styled.p`
 	text-align: center;
 	height: 10px;
 	font-size: 20px;
+	margin-bottom: 10px;
 `;
 
 const HeaderMenu = styled.div`
@@ -61,10 +74,12 @@ const HeaderMenu = styled.div`
 `;
 
 const TimerBox = styled.div`
-	width: 60px;
+	width: 75px;
 	text-align: center;
-	padding: 3px;
 	font-size: 20px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 `;
 
 const ResetButton = styled.button`
@@ -76,4 +91,10 @@ const ResetButton = styled.button`
 	font-size: 18px;
 `;
 
-const MineCount = styled.div``;
+const MineCount = styled.div`
+	width: 75px;
+	display: flex;
+	font-size: 20px;
+	justify-content: space-between;
+	align-content: center;
+`;
