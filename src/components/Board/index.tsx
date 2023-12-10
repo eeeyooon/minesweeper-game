@@ -9,7 +9,7 @@ import { CELL_TYPE, GAME_STATUS } from '../../lib/constants';
 export default function Board() {
 	const dispatch = useDispatch();
 	const game = useSelector((state: RootState) => state.game);
-	const { rows, cols, board, gameStatus } = game;
+	const { rows, cols, board, gameStatus, previousStates } = game;
 	console.log(gameStatus);
 	console.log(game);
 
@@ -22,20 +22,16 @@ export default function Board() {
 		dispatch(toggleFlag({ row, col }));
 	};
 
-	const getCellText = (cellType: number) => {
+	const getCellText = (cellType: number, row: number, col: number) => {
 		switch (cellType) {
 			case CELL_TYPE.OPEN:
 			case CELL_TYPE.NOTHING:
 				return '';
 			case CELL_TYPE.UNKNOWN:
-				switch (gameStatus) {
-					case GAME_STATUS.WIN:
-						return '🎉';
-					case GAME_STATUS.LOSE:
-						return '💣';
-					default:
-						return '❓';
+				if (gameStatus === GAME_STATUS.LOSE && previousStates[row][col] === CELL_TYPE.MINE) {
+					return '💣';
 				}
+				return '❓';
 			case CELL_TYPE.FLAG:
 				return '🚩';
 			case CELL_TYPE.MINE_FLAG:
@@ -74,7 +70,7 @@ export default function Board() {
 					row={row}
 					col={col}
 					cellData={board[row][col]}
-					cellText={getCellText(board[row][col])}
+					cellText={getCellText(board[row][col], row, col)}
 					onClick={() => handleCellClick(row, col)}
 					onContextMenu={(e) => handleRightClick(e, row, col)}
 				/>,
