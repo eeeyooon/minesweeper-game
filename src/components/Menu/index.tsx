@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { customLevel, selectLevel } from '../../slices/gameSlice';
 import { GAME_LEVEL } from '../../lib/constants';
@@ -18,7 +18,7 @@ import { RootState } from '../../store';
 
 export default function Menu() {
 	const dispatch = useDispatch();
-	const level = useSelector((state: RootState) => state.game.level);
+	const gameLevel = useSelector((state: RootState) => state.game.level);
 	const [rows, setRows] = useState(0);
 	const [cols, setCols] = useState(0);
 	const [mines, setMines] = useState(0);
@@ -27,13 +27,15 @@ export default function Menu() {
 
 	const handleSelectLevel = (level: 'beginner' | 'intermediate' | 'expert') => {
 		dispatch(selectLevel({ level }));
-		setSelectedLevel(level);
-		setSelectedLevel(level);
 		setInfo(' ');
 		setRows(0);
 		setCols(0);
 		setMines(0);
 	};
+
+	useEffect(() => {
+		setSelectedLevel(gameLevel);
+	}, [gameLevel]);
 
 	const handleCustomLevelStart = () => {
 		if (rows > 100 || cols > 100) {
